@@ -33,12 +33,6 @@ Route::post('Crea','HomeController@Crea')->name('Crea');
 
 Route::get('pdf_ordini/{id}','HomeController@Pdf_Ordini')->name('pdf_ordini');
 
-Route::get('/prova', function(){ 
-	$Clienti=\App\Clienti::all();
-	return view('ordini.prova',compact('Clienti')); 
-});
-
-Route::post('/provaPost','HomeController@provaPost')->name('provaPost');
 
 
 

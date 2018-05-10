@@ -71,20 +71,9 @@ class HomeController extends Controller
         
     }
 
-    public function provaPost(Request $request){   
+   
 
-         $response = array(
-          'status' => 'success',
-          'msg' => $request->message,
-      );
-
-        $cliente=\App\Clienti::find($request->message);
-        $ordine=DB::table('ordinis')->where('id_cliente',$request->message)->get();
-        return response()->json($ordine); 
-         
-
-    }
-
+  
 
   
 
