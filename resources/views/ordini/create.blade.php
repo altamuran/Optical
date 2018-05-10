@@ -7,7 +7,7 @@
         <H1>AGGIUNERE UN NUOVO ORDINE</H1>
     </div>
 </div>
-    @include('ordini.form')
+    @include('ordini.prova')
 
 
 @endsection

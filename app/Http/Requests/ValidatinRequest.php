@@ -28,13 +28,10 @@ class ValidatinRequest extends FormRequest
 
      return [   'codice_cliente'=> 'required|numeric|max:5000',
                 'ragione_sociale'=>'required|string|max:100',
-                'sfero_sx'=>'required|numeric|max:10|min:0.25',
-                'sfero_dx'=>'required|numeric|max:10|min:0.25',
+                'sfero_sx'=>'required|numeric|max:50|min:-50',
+                'sfero_dx'=>'required|numeric|max:50|min:-50',
 
-                'cilindro_dx'=>'required|numeric|max:10|min:0',
-                'cilindro_sx'=>'required|numeric|max:10|min:0',
-                'asse_dx'=>'required|numeric|max:180|min:0' ,
-                'asse_sx'=>'required|numeric|max:180|min:0',
+                
             ];   
 
     }

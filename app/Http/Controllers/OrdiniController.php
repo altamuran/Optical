@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidatinRequest;
 use App\Exceptions\Handler;
 use App\Exceptions\Exception;
+use rizalafani\fpdflaravel\FpdfFacade;
 use App\Http\Controllers\Redirect;
 
-include 'Store_Lenti.php';
+include 'Validate_and_store.php';
 
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+
+
 
 use Illuminate\Http\Request;
 use App;
@@ -26,16 +29,22 @@ class OrdiniController extends Controller
     {           
 
 
+            // $ordine=\App\Ordini::first();
+             //if($ordine==null){
+             //redirect()->route('index')->withErrors(['Nessun ordine presente']);
+               //   }
+        
+
+             $Ordini = DB::table('ordinis')
+            ->join('clientis', 'ordinis.id_cliente', '=', 'clientis.codice_cliente')
+            ->join('lente_dxes', 'ordinis.id_lente_dx', '=', 'lente_dxes.id')
+            ->join('lente_sxes', 'ordinis.id_lente_sx', '=', 'lente_sxes.id')
+            ->select('ordinis.*', 'clientis.ragione_sociale','clientis.codice_cliente','lente_dxes.*','lente_sxes.*')->orderBy('ordinis.created_at')
+            ->simplePaginate(15);
+            
             
 
-           
-            $Ordini = DB::table('ordinis')
-            ->join('clientis', 'ordinis.id_cliente', '=', 'clientis.codice_cliente')
-            ->select('ordinis.*', 'clientis.ragione_sociale','clientis.codice_cliente')
-            ->get();
-            //dd($Ordini);
-
-             return view('ordini.index',compact('Ordini'));
+            return view('ordini.index',compact('Ordini'));
              
     }
 
@@ -60,27 +69,36 @@ class OrdiniController extends Controller
     {   
 
         $request_var=$request;
-        Store_Lenti($request_var);
         
-        $data = App\Ordini::latest()->first();
-        if ($data == null){
+
+        $Validate_and_store=new Validate_and_store();
+        $error=$Validate_and_store->Store_Lenti($request_var);
+        
+
+        if($error!=0){
+        return redirect()->back()->withInput()->withErrors(['SE INSERITO IL CILINDRO IL CAMPO ASSE DEVE ESSERE COMPLETATO']);
+        }
+        
+        $ordine = App\Ordini::latest()->first();
+
+        if ($ordine == null){
         $ordine= new \App\Ordini();
         $ordine->n_ordine=1;
         $ordine->id_cliente=$request->codice_cliente;
         $ordine->id_lente_dx=\App\Lente_dx::latest()->first()->id;
         $ordine->id_lente_sx=\App\Lente_sx::latest()->first()->id;
         $ordine->save();
+        }else {
         
-
-        } 
-    
         $ordine= new \App\Ordini();
-        $ordine->n_ordine=\App\Ordini::latest()->first()->n_ordine+rand(0,2);
+        $ordine->n_ordine=\App\Ordini::latest()->first()->n_ordine+rand(0,20);
         $ordine->id_cliente=$request->codice_cliente;
         $ordine->id_lente_dx=\App\Lente_dx::latest()->first()->id;
         $ordine->id_lente_sx=\App\Lente_sx::latest()->first()->id;
 
+
         $ordine->save();
+    }
 
      return redirect()->action(
     'OrdiniController@index');
@@ -96,13 +114,20 @@ class OrdiniController extends Controller
      */
     public function show($id)
     {
-        $ordine = DB::table('ordinis')->where('n_ordine', $id)->get();
         
-        $Lente_sx = DB::table('lente_sxes')->where('id', $ordine[0]->id_lente_sx)->get();
+    $ordine = App\Ordini::find($id);
+    if ($ordine == null) {
+       
+    return redirect()->back()->withErrors(['Ordine non presente', 'Ordine non presente']);
+    }
 
-        $Lente_dx = DB::table('lente_sxes')->where('id', $ordine[0]->id_lente_sx)->get();
+        $ordine = \App\Ordini::find($id);
+        
+        $Lente_sx = \App\Lente_sx::find($ordine->id_lente_sx);
 
-        $cliente = DB::table('clientis')->where('codice_cliente', $ordine[0]->id_cliente)->get();
+        $Lente_dx = \App\Lente_dx::find($ordine->id_lente_dx);
+        
+        $cliente = \App\Clienti::find($ordine->id_cliente);
 
         return view('ordini.show',compact('ordine','Lente_sx','Lente_dx','cliente'));
 
@@ -128,7 +153,11 @@ class OrdiniController extends Controller
        
             $ordine = App\Ordini::find($id);
             $Cliente = App\Clienti::find($ordine->id_cliente);
-            return view('ordini.edit',compact('ordine','Cliente'));
+            $lentedx=App\Lente_dx::find($ordine->id_lente_dx);
+            $lentesx=App\Lente_sx::find($ordine->id_lente_sx);
+
+
+            return view('ordini.edit',compact('ordine','Cliente','lentedx','lentesx'));
      }
 
     }
@@ -148,24 +177,22 @@ class OrdiniController extends Controller
         $ordine=\App\Ordini::find($id);
 
                 
-        
-        
+         $Validate_and_store=new Validate_and_store();
+
+
         $lentedx=\App\Lente_dx::find($ordine->id_lente_dx);
         $lentesx=\App\Lente_sx::find($ordine->id_lente_sx);
+        
+        $error=$Validate_and_store->Edit_Store($request,$lentedx,$lentesx);
+
+         if($error!=0){
+        return redirect()->back()->withInput()->withErrors(['SE INSERITO IL CILINDRO IL CAMPO ASSE DEVE ESSERE COMPLETATO']);
+        }
 
 
-        $lentesx->sfero=$request_var->sfero_sx;
-        $lentesx->cilindro=$request_var->cilindro_sx;
-        $lentesx->asse=$request_var->asse_sx;
-
-        $lentedx->cilindro=$request_var->cilindro_dx;
-        $lentedx->sfero=$request_var->sfero_dx;
-        $lentedx->asse=$request_var->asse_dx;
-
-
-        $lentesx->save();
-        $lentedx->save();
-
+       
+         return redirect()->action(
+            'OrdiniController@show',['id'=>$ordine->n_ordine]);
 
         
     }
@@ -196,10 +223,17 @@ class OrdiniController extends Controller
     }
 
 
-      public function next($id)
-    {
-         $Cliente = DB::table('clientis')->where('codice_cliente', $id)->get(); 
-         return view('ordini.next',compact('Cliente'));
+      public function next($id){
+
+            $cliente = App\Clienti::find($id);
+            if ($cliente == null) {
+            // cliente not found, sredirect
+            return redirect()->back()->withErrors(['cliente non presente']);
+            } else {
+
+            $Cliente =App\Clienti::find($id);
+            return view('ordini.next',compact('Cliente'));
+        }
     }
 
       public function cerca()
@@ -211,29 +245,18 @@ class OrdiniController extends Controller
       public function Cerca_POST(Request $request)
     {    
         $n_ordine=$request->numero_ordine;
-        $ordini=App\Ordini::all();
-        $i=0;
-        $dim=count($ordini);
-        $trovato=false;
-        //dd($dim);
-        
 
-        while ($i<$dim) {
-           if($ordini[$i]->n_ordine==$n_ordine){
-                $trovato=true;
-                break;
+        $ordini=App\Ordini::find($n_ordine);
+
+        if($ordini!=null){
+            return redirect()->action(
+            'OrdiniController@show',['id'=>$n_ordine]);
+        }
+
+         else{
+                return redirect()->back()->withErrors(['Ordine non presente', 'Ordine non presente']);
             }
-            $i++;
-       }
-
-            if($trovato==true){
-                                return redirect()->action(
-                                'OrdiniController@show',['id'=>$n_ordine]);
-                                }   else{
-                                        return redirect()->back()->withErrors(['Ordine non presente', 'Ordine non presente']);
-                                    }
-
-    }
+        }
 
   
 

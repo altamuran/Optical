@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ClienteRequest;
+
+include('pdf_generator.php');
+
+
 
 class HomeController extends Controller
 {
@@ -50,11 +55,38 @@ class HomeController extends Controller
          return redirect()->action(
     'OrdiniController@create');
         
-    
+    }
+
+    public function Pdf_Ordini($id)
+
+    {   
+
+
+        $ordine= \App\Ordini::find($id);
+        $lente_dx=\App\lente_dx::find($ordine->id_lente_dx);
+        $lente_sx=\App\lente_sx::find($ordine->id_lente_sx);
+        $cliente= \App\Clienti::find($ordine->id_cliente);
+        
+        pdf_generator($ordine,$cliente,$lente_sx,$lente_dx);
         
     }
 
+    public function provaPost(Request $request){   
 
+         $response = array(
+          'status' => 'success',
+          'msg' => $request->message,
+      );
+
+        $cliente=\App\Clienti::find($request->message);
+        $ordine=DB::table('ordinis')->where('id_cliente',$request->message)->get();
+        return response()->json($ordine); 
+         
+
+    }
+
+
+  
 
   
 }

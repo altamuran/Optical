@@ -55,7 +55,7 @@
     <div class="form-group">
      <label class="col-md-4 control-label" for="selectbasic">Sfero</label>
         <div class="col-md-4">
-            <input type="number" step="0.25" name="sfero_dx" min="0" max="10" class="form-control">
+            <input type="number" step="0.25" name="sfero_dx" min="0" max="10" class="form-control" id='sfero_dx' onchange="SetPattern('sfero_dx')"  value="{{$lentedx->sfero_dx}}" }>
         </div>
     </div>
 
@@ -64,16 +64,23 @@
     <div class="form-group">
      <label class="col-md-4 control-label" for="selectbasic">Cilindro</label>
         <div class="col-md-4">
-            <input type="number" step="0.25" name="cilindro_dx" min="0" max="10" class="form-control">
+            <input type="number" step="0.25" name="cilindro_dx" min="0" max="10" class="form-control" value="{{$lentedx->cilindro_dx}}"  id="cilindro_dx"  onchange="SetPattern('cilindro_dx')">
         </div>
     </div>
 
 
-    <<div class="form-group">
-     <label class="col-md-4 control-label" for="selectbasic">Asse</label>
+    <div class="form-group">
+     <label class="col-md-4 control-label" for="selectbasic">Asse  TABO</label>
         <div class="col-md-4">
-            <input type="number" step="10" name="asse_dx" min="0" max="180"  class="form-control">
+            <input type="number" step="10" name="asse_dx" min="0" max="180"  class="form-control" value={{$lentedx->asse_dx}}>
         </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+     <label class="col-md-4 control-label" for="selectbasic">Addizione</label>
+        <div class="col-md-4">
+            <input type="number" step="0.25" name="addizione_dx" min="-50" max="50" class="form-control" value="{{$lentedx->sfero_dx}}" id="addizione_dx" onchange="SetPattern('addizione_dx')"> 
         </div>
     </div>
 
@@ -83,7 +90,7 @@
     <div class="form-group">
      <label class="col-md-4 control-label" for="selectbasic">Sfero</label>
         <div class="col-md-4">
-            <input type="number" step="0.25" name="sfero_sx" min="0" max="10" class="form-control">
+            <input type="number" step="0.25" name="sfero_sx" min="-50" max="50" class="form-control" value="{{$lentesx->sfero_sx}}"  id="sfero_sx" onchange="SetPattern('sfero_sx')">
         </label>
         </div>
     </div>
@@ -93,17 +100,24 @@
     <div class="form-group">
      <label class="col-md-4 control-label" for="selectbasic">Cilindro</label>
         <div class="col-md-4">
-            <input type="number" step="0.25" name="cilindro_sx" min="0" max="10" class="form-control">
+            <input type="number" step="0.25" name="cilindro_sx" min="-50" max="50" class="form-control" value="{{$lentesx->cilindro_sx}}" id="cilindro_sx"  onchange="SetPattern('cilindro_sx')">
         </label>
         </div>
     </div>
 
 
-    <<div class="form-group">
-     <label class="col-md-4 control-label" for="selectbasic">Asse</label>
+    <div class="form-group">
+     <label class="col-md-4 control-label" for="selectbasic">Asse  TABO</label>
         <div class="col-md-4">
-            <input type="number" step="10" name="asse_sx" min="0" max="180"  class="form-control">
+            <input type="number" step="10" name="asse_sx" min="0" max="180"  class="form-control" value="{{$lentesx->asse_sx}}">
         </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+     <label class="col-md-4 control-label" for="selectbasic">Addizione</label>
+        <div class="col-md-4">
+            <input type="number" step="0.25" name="addizione_sx" min="-50" max="50" class="form-control" value="{{$lentesx->addizione_sx}}"  id="addizione_sx" onchange="SetPattern('addizione_sx')">
         </div>
     </div>
 
@@ -137,6 +151,37 @@
     </form>
 </div>
 
+<script type="text/javascript">
+
+    function SetPattern(p1) {
+    var value=document.getElementById(p1).value;
+    var s_value=value.toString();   
+    var pos_z = s_value.search("0");
+    var pos_p = s_value.indexOf('.');
+     
+     if(pos_z==0){
+        console.log(pos_p);
+        if(pos_p!=1){
+            value=value/100;       
+        }
+        
+    }
+    else{
+        if(value>10){
+        value=value/10
+        }
+        if(value >100){
+        value=value/100
+        }
+
+    }
+
+    document.getElementById(p1).value=value;
+    console.log(value)           // The function returns the product of p1 and p2
+}
+;
+
+</script>
 
 
 

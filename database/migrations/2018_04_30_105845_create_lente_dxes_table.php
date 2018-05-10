@@ -15,10 +15,10 @@ class CreateLenteDxesTable extends Migration
     {
         Schema::create('lente_dxes', function (Blueprint $table) {
            $table->increments('id');
-            $table->unsignedDecimal('sfero', 3,2);
-            $table->unsignedDecimal('cilindro',3,2)->nullable();;
-            $table->unsignedinteger('asse');
-            $table->unsignedDecimal('addizione',3,2)->nullable();;
+            $table->Decimal('sfero_dx', 3,2);
+            $table->Decimal('cilindro_dx',3,2)->nullable();;
+            $table->Integer('asse_dx')->default(0);
+            $table->Decimal('addizione_dx',3,2)->nullable();
 
             $table->timestamps();
         });

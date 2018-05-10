@@ -12,17 +12,17 @@ class lenti_TableSeeder extends Seeder
     public function run()
     {
          DB::table('lente_dxes')->insert([
-            'sfero' => rand(0,5),
-            'cilindro' => rand(0,5),
-            'asse' => rand(0,180),
-            'addizione' => rand(0,5),
+            'sfero_dx' => rand(0,5),
+            'cilindro_dx' => rand(0,5),
+            'asse_dx' => rand(0,180),
+            'addizione_dx' => rand(0,5),
        	]);
 
            	DB::table('lente_sxes')->insert([
-            'sfero' => rand(0,5),
-            'cilindro' => rand(0,5),
-            'asse' => rand(0,180),
-            'addizione' => rand(0,5),
+            'sfero_sx' => rand(0,5),
+            'cilindro_sx' => rand(0,5),
+            'asse_sx' => rand(0,180),
+            'addizione_sx' => rand(0,5),
        	]);
     }
 }

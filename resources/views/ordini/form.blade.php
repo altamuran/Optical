@@ -12,8 +12,7 @@
         <tr>
             <th>Coidce cliente</th>
             <th>ragione socaiel</th>
-            
-            <th class="text-center">Action</th>
+            <th>Seleziona</th>
         </tr>
 
     </thead>
@@ -22,7 +21,7 @@
             <tr>
                 <td>{{$C->codice_cliente}}</td>
                 <td>{{$C->ragione_sociale}}</td>
-                <td><a href="{{route('next',[$C->codice_cliente])}}">seleziona</a></td>
+                <td><a href="{{route('next',[$C->codice_cliente])}}" class="btn btn-primary" >seleziona</a></td>
             </tr>
      @endforeach
     </table>

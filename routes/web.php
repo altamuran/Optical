@@ -20,17 +20,37 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
+
 Route::get('/home', 'OrdiniController@index')->name('index');
 Route::get('next/{id}','OrdiniController@next')->name('next');
 Route::get('cerca','OrdiniController@cerca')->name('cerca');
 Route::post('cerca_POST','OrdiniController@Cerca_POST')->name('cerca_POST');
 
+
 Route::get('add_cliente','HomeController@CreaCliente')->name('add_cliente');
 Route::post('Crea','HomeController@Crea')->name('Crea');
 
 
-//route Crud
+Route::get('pdf_ordini/{id}','HomeController@Pdf_Ordini')->name('pdf_ordini');
+
+Route::get('/prova', function(){ 
+	$Clienti=\App\Clienti::all();
+	return view('ordini.prova',compact('Clienti')); 
+});
+
+Route::post('/provaPost','HomeController@provaPost')->name('provaPost');
+
+
+
+
 Route::resource('ordini', 'OrdiniController');
+
+
+
+
+
+
+//route Crud
 
 
 Auth::routes();

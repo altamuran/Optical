@@ -9,7 +9,8 @@ class Ordini extends Model
       protected $fillable = ['id_cliente'];
      protected $table = 'ordinis';
      protected $primaryKey = 'n_ordine';
-      public $timestamps = false;
+    
+      
       public function lente_dx()
     {
         return $this->hasOne('App\Lente_dx');

@@ -12,12 +12,22 @@
   <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
   <div class="container">
-  	<div class="row">
+  	
+      @if(count($errors)>0)
+    <div class="alert alert-danger">
+    <ul>
+      @foreach($errors->all() as $error)
+      <li>{{$error}}</li>
+      @endforeach
+    </ul>
+    </div>
+    @endif
+
   		
           
-            <div class="col-md-12">
+            
           
-                <h4>Ordini</h4>
+             <h4>Ordini</h4>
               <div class="table-responsive">
 
                   
@@ -25,37 +35,53 @@
                      
                      <thead>
                      
-                     <th><input type="checkbox" id="checkall" /></th>
+                     
                      <th>Codice_cliente</th>
                       <th>Ragione sociale</th>
-                       <th>Lente dx</th>
-                       <th>Lente sx</th>
-                       <th>ID_ordine</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                        <th>view</th>
-                     </thead>
+                      <th>ID_ordine</th>
+                        <th>Sfero dx</th>
+                        <th>Cilindro dx</th>
+                        <th>Asse dx</th>
+                        <th>ADD dx</th>
+                       <th>Sfero sx</th>
+                        <th>Cilindro sx</th>
+                        <th>Asse sx</th>
+                        <th>ADD sx</th>
+                        
+                      </thead>
                   <tbody>
                       @foreach($Ordini as $key=>$O)
-                      <tr>
-                      <td><input type="checkbox" class="checkthis"/></td>
+              <tr>
+                      
                       <td>{{$O->codice_cliente}}</td>
                       <td>{{$O->ragione_sociale}}</td>
-                      <td>{{$O->id_lente_dx}}</td>
-                      <td>{{$O->id_lente_dx}}</td>
                       <td>{{$O->n_ordine}}</td>
+                      <td>{{$O->sfero_dx}}</td>
+                      <td>{{$O->cilindro_dx}}</td>
+                      <td>{{$O->asse_dx}}</td>
+                      <td>{{$O->addizione_dx}}</td>
+                      <td>{{$O->sfero_sx}}</td>
+                      <td>{{$O->cilindro_sx}}</td>
+                      <td>{{$O->asse_sx}}</td>
+                      <td>{{$O->addizione_sx}}</td>
+                      
       
                       <td>  
-                      <a href="{{ route('ordini.edit',[$O->n_ordine]) }}" class="btn btn-primary btn-xs">
-                      <p data-placement="top" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-pencil"></span></p>
+                      <a href="{{ route('ordini.edit',[$O->n_ordine]) }}" class="btn btn-primary ">
+                      EDIT
                       </a>     
                       </td>
 
                       <td>
                       <button class="btn btn-danger"  id="btn1" onclick="showStuff('{{$O->n_ordine}}')">
-                      delete
+                      DELETE
                       </button>
                   </td>
+                   <td>
+                      <a href="{{route('ordini.show',[$O->n_ordine])}}"  class="btn btn-success">DETTAGLI</a>
+                      </td>
+                     
+                    </tbody>
                     
                 <td>
                     <div class="modal in  col-md-12" id={{$O->n_ordine}}>
@@ -85,34 +111,28 @@
                     </div>
                   </div>
             </td>
+      </tr>     
 
 
-                      <td>
-                      <a href="{{route('ordini.show',[$O->n_ordine])}}"  class="btn btn-success">DETTAGLI ORDINE</a>
-                      </td>
-                      </tr>
-                    </tbody>
+                     
          @endforeach  
               </table>
+
   
                   <div class="clearfix"></div>
 
-                  <ul class="pagination pull-right">
-                    <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
-                  </ul>
-                  
 
-        
-  	</div>
+                  <ul class="pagination pull-right">
+                    <li class="disabled"><a href="{{$Ordini->previousPageUrl()}}"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+                    <li><a href="{{$Ordini->url(1)}}">1</a></li>
+                    <li><a href="{{$Ordini->url(2)}}">2</a></li>
+                    <li><a href="{{$Ordini->url(3)}}">3</a></li>
+                    <li><a href="{{$Ordini->url(4)}}">4</a></li>
+                    <li><a href="{{$Ordini->url(5)}}">5</a></li>
+                    <li><a href="{{$Ordini->nextPageUrl()}}"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+                  </ul>
+        </div>
   </div>
-</div>
-</div>
 
 
 

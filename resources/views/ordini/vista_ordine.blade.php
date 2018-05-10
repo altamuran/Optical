@@ -5,7 +5,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+        <div class="well col-xs-10 col-sm-10 col-md-10 col-xs-offset-1 col-sm-offset-1 col-md-offset-1">
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6">
                     <address>
@@ -23,7 +23,7 @@
                         <em>Date: 1st November, 2013</em>
                     </p>
                     <p>
-                        <em>Numero ordine :{{$ordine[0]->n_ordine}}</em>
+                        <em>Numero ordine :{{$ordine->n_ordine}}</em>
                     </p>
                 </div>
             </div>
@@ -42,8 +42,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="col-md-9"><em>{{$cliente[0]->ragione_sociale}}</em></h4></td>
-                            <td class="col-md-1" style="text-align: center"> {{$cliente[0]->codice_cliente}}</td>
+                            <td class="col-md-9"><em>{{$cliente->ragione_sociale}}</em></h4></td>
+                            <td class="col-md-1" style="text-align: center"> {{$cliente->codice_cliente}}</td>
                             <td class="col-md-1 text-center"></td>
                             <td class="col-md-1 text-center"></td>
                         </tr>
@@ -65,10 +65,10 @@
 
                      <tbody>
                         <tr>
-                            <td class="col-md-2"><em>{{$Lente_dx[0]->sfero}}</em></td>
-                            <td class="col-md-1">{{$Lente_dx[0]->cilindro}}</td>
-                            <td class="col-md-1 ">{{$Lente_dx[0]->asse}}</td>
-                            <td class="col-md-1 ">{{$Lente_dx[0]->addizione}}</td>
+                            <td class="col-md-2"><em>{{$Lente_dx->sfero_dx}}</em></td>
+                            <td class="col-md-1">{{$Lente_dx->cilindro_dx}}</td>
+                            <td class="col-md-1 ">{{$Lente_dx->asse_dx}}</td>
+                            <td class="col-md-1 ">{{$Lente_dx->addizione_dx}}</td>
                         </tr>
                 </tbody>
 
@@ -88,10 +88,10 @@
 
                      <tbody>
                         <tr>
-                            <td class="col-md-2"><em>{{$Lente_sx[0]->sfero}}</em></td>
-                            <td class="col-md-1">{{$Lente_sx[0]->cilindro}}</td>
-                            <td class="col-md-1 ">{{$Lente_sx[0]->asse}}</td>
-                            <td class="col-md-1 ">{{$Lente_sx[0]->addizione}}</td>
+                            <td class="col-md-2"><em>{{$Lente_sx->sfero_sx}}</em></td>
+                            <td class="col-md-1">{{$Lente_sx->cilindro_sx}}</td>
+                            <td class="col-md-1 ">{{$Lente_sx->asse_sx}}</td>
+                            <td class="col-md-1 ">{{$Lente_sx->addizione_sx}}</td>
                         </tr>
                 </tbody>
 
@@ -111,9 +111,14 @@
 
 
 
-                <button type="button" class="btn btn-success btn-lg btn-block">
-                    Cnferma   <span class="glyphicon glyphicon-chevron-right"></span>
-                </button></td>
+                <div style="align-items: center">
+  
+                        <a href="{{route('pdf_ordini',[$ordine->n_ordine])}}" class="btn btn-primary">
+                        Download riepilogo ordine
+                        </a>
+           
+                </div>
+
             </div>
         </div>
     </div>
